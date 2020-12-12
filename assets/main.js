@@ -40,15 +40,20 @@
         const savedTodos = localDB.getItem('todos');
         if (savedTodos) {
             todos = savedTodos;
-
-            showDate();
         }
+
+        showDate();
     };
 
     const showDate = () => {
         const currentDate = new Date();
+        const day = [
+            currentDate.getMonth() + 1,
+            currentDate.getDate(),
+            currentDate.getFullYear(),
+        ].map(num => num < 10 ? `0${num}` : num);
         bodyDay.textContent = dayNames[currentDate.getDay()];
-
+        bodyDate.textContent = day.join('-');
     };
 
 
