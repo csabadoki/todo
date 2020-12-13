@@ -36,13 +36,20 @@
     };
 
     const init = () => {
+        
+        showDate();
+        setListeners();
+        loadExistingTodos();
+    };
+    
+    const loadExistingTodos = () => {
         const savedTodos = localDB.getItem('todos');
         if (savedTodos) {
             todos = savedTodos;
         }
-
-        showDate();
-        setListeners();
+        if (todos && Array.isArray(todos)) {
+            todos.forEach(todo => showTodo(todo));
+        }
     };
 
     const showDate = () => {
