@@ -1,12 +1,11 @@
 (function () {
-    let todos = [
-        { title: "lunch", content: "lunch with my friends" },
-        { title: "lunch", content: "lunch with my friends" },
-        { title: "lunch", content: "lunch with my friends" },
-    ]
+    let todos = []
 
     const bodyDay = document.querySelector('.body__day');
     const bodyDate = document.querySelector('.body__date');
+    const todoAddBtn = document.querySelector(".todo__btn")
+    const todoInput = document.querySelector(".todo__input")
+    const todoListPending = document.querySelector(".todo__list--pending");
 
     const dayNames = [
         'Sunday',
@@ -43,6 +42,7 @@
         }
 
         showDate();
+        setListeners();
     };
 
     const showDate = () => {
@@ -52,10 +52,49 @@
             currentDate.getDate(),
             currentDate.getFullYear(),
         ].map(num => num < 10 ? `0${num}` : num);
+
         bodyDay.textContent = dayNames[currentDate.getDay()];
         bodyDate.textContent = day.join('-');
     };
 
+    const setListeners = () => {
+        todoAddBtn.addEventListener('click', addNewTodo);
+    };
+
+    const addNewTodo = () => {
+        const value = todoInput.value;
+        if (value === '') {
+            alert('Please type a todo');
+            return;
+        }
+
+        const todo = {
+            text: value,
+            done: false
+        };
+
+        todos.push(todo);
+
+        localDB.setItem('todos', todos);
+
+        showTodo(todo);
+
+        todoInput.value = '';
+    };
+
+    const showTodo = todo => {
+        const todoItem = document.createElement('div');
+        todoListPending.appendChild(todoItem);
+
+        todoItem.innerHTML = `
+            <input type='checkbox'>
+            <span>${todo.text}</span>
+            <button>
+                <i class="fa fa-trash"> </i>
+            </button>
+        `;
+
+    };
 
     init();
 
